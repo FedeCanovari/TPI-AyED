@@ -1,7 +1,9 @@
 ## INFORME DEL TRABAJO PRÁCTICO FINAL
 
 Materia: Algoritmos y Estructura de datos
+
 Alumnos: Canovari Carlos - Tkaczuk Uriel
+
 Fecha: 11 de mayo de 2026
 
 ### INTRODUCCIÓN
@@ -38,14 +40,19 @@ comprensión y el desarrollo del sistema.
 Primero se ejecutó el programa para comprender el flujo general de la
 aplicación y observar cómo se cargaban los datos desde el archivo CSV.
 Se analizaron principalmente:
+
 ● la lectura del dataset
+
 ● el funcionamiento de la interfaz
+
 ● el uso de la clase Backend
+
 ● la relación entre Backend y Estrategia.
 
 2. Análisis de la clase Estrategia
 Luego se revisó la clase Estrategia, identificando los métodos que debían ser
-implementados: 
+implementados:
+
 ● BuscarConOtro()
 
 ● BuscarConHeap()
@@ -60,10 +67,11 @@ En esta primera etapa se decidió implementar únicamente el método
 BuscarConOtro(), ya que representa una solución más simple y adecuada para
 comprender el funcionamiento general del trabajo práctico.
 
-4. Implementación del contador de ocurrencias
+3. Implementación del contador de ocurrencias
 Se creó un método auxiliar llamado ContarOcurrencias(), cuyo objetivo es
 recorrer la lista de strings y contar cuántas veces aparece cada elemento
 utilizando un Dictionary<string, int>.
+
 ● La lógica implementada consiste en:
 
   ● verificar si un elemento ya existe en el diccionario
@@ -72,32 +80,102 @@ utilizando un Dictionary<string, int>.
   
   ● o agregarlo si aparece por primera vez.
 
-6. Conversión de datos a objetos Dato
+4. Conversión de datos a objetos Dato
 Una vez obtenidas las ocurrencias, los resultados fueron transformados en
 objetos de tipo Dato para poder trabajar con ellos dentro del sistema.
 Cada objeto almacena:
+
 ● el texto
 
 ● y la cantidad de ocurrencias encontradas.
+
 Esto permitió preparar los datos para ser ordenados y posteriormente
 mostrados en la interfaz gráfica.
 
-8. Implementación del algoritmo de ordenamiento
+5. Implementación del algoritmo de ordenamiento
 Como primera etapa del desarrollo se implementó un algoritmo SelectionSort
 debido a su simplicidad y facilidad para comprender el funcionamiento
 general del sistema.
 La lógica utilizada consistía en:
+
 ● buscar el elemento con mayor cantidad de ocurrencias,
+
 ● moverlo al inicio de la lista,
+
 ● y repetir el proceso para el resto de los elementos.
 
 Esta implementación permitió validar:
+
 ● el conteo de ocurrencias
+
 ● la conversión a objetos Dato
+
 ● y la visualización correcta de resultados en pantalla
 
+Una vez verificado el correcto funcionamiento general del sistema, se decidió
+mejorar la estrategia de ordenamiento reemplazando SelectionSort por
+MergeSort.
+La decisión fue tomada debido a que MergeSort posee un mejor rendimiento
+para trabajar con grandes volúmenes de datos, resultando más adecuado para
+el tamaño de los datasets utilizados en el trabajo práctico.
+La lógica de MergeSort consiste en:
 
+● dividir la lista en partes más pequeñas
 
+● ordenar recursivamente cada parte
+
+● y posteriormente unirlas de forma ordenada
+
+6. Carga de resultados
+Finalmente, luego de ordenar la lista, se tomaron únicamente los primeros
+resultados solicitados por el usuario mediante el parámetro cantidad.
+Estos elementos fueron agregados a la lista collected para ser mostrados
+posteriormente en la interfaz gráfica del sistema.
+
+### RESULTADOS
+Durante el desarrollo del trabajo primero se utilizó SelectionSort como una
+implementación inicial para validar el funcionamiento general del sistema.
+Posteriormente, se reemplazó por MergeSort debido a que ofrece una mejor
+complejidad y un rendimiento más adecuado para conjuntos de datos grandes.
+Este cambio permitió mejorar la eficiencia del procesamiento y también profundizar
+la comprensión de algoritmos de ordenamiento más avanzados vistos en la materia.
+
+### CONCLUSIÓN
+En esta primera entrega se logró desarrollar una solución funcional para el problema
+planteado utilizando estructuras y algoritmos básicos vistos en la materia.
+El trabajo permitió reforzar conceptos importantes como:
+
+● recorridos de listas
+
+● conteo de ocurrencias
+
+● uso de diccionarios
+
+● algoritmos de ordenamiento
+
+● manejo de objetos
+
+● y separación entre lógica e interfaz gráfica
+
+Para las próximas etapas del proyecto se espera:
+
+● implementar la búsqueda utilizando Heap
+
+● incorporar las consultas restantes solicitadas por la cátedra
+
+● medir tiempos de ejecución
+
+● y mejorar la organización interna del código
+
+Además, el trabajo permitió comprender la diferencia entre implementar una
+solución simplemente funcional y posteriormente evolucionarla hacia una alternativa
+más eficiente y adecuada para el problema planteado.
+
+### REFERENCIAS
+1. Material teórico de Algoritmos y Estructuras de Datos – UNAJ.
+2. Clases prácticas de la materia.
+3. Documentación oficial de C# y .NET.
+4. Código base proporcionado por la cátedra.
 
 
 
