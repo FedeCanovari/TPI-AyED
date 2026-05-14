@@ -39,7 +39,7 @@ También se considera que dividir el problema en pequeñas etapas facilita la co
 
 # PROCEDIMIENTO
 
-## 1. Análisis inicial del proyecto
+# 1. Análisis inicial del proyecto
 
 Primero se ejecutó el programa para comprender el flujo general de la aplicación y observar cómo se cargaban los datos desde el archivo CSV.
 
@@ -49,13 +49,9 @@ Se analizaron principalmente:
 - el uso de la clase `Backend`,
 - y la relación entre `Backend` y `Estrategia`.
 
-![Figura 1](imagenes/figura1.png)
-
-**Figura 1 – Proyecto abierto en Visual Studio y estructura general del sistema.**
-
 ---
 
-## 2. Análisis de la clase Estrategia
+# 2. Análisis de la clase Estrategia
 
 Luego se revisó la clase `Estrategia`, identificando los métodos que debían ser implementados:
 
@@ -69,7 +65,7 @@ En una primera etapa se decidió implementar inicialmente una solución basada e
 
 ---
 
-## 3. Implementación del contador de ocurrencias
+# 3. Implementación del contador de ocurrencias
 
 Se creó un método auxiliar llamado `ContarOcurrencias()`, cuyo objetivo es recorrer la lista de strings y contar cuántas veces aparece cada elemento utilizando un `Dictionary<string,int>`.
 
@@ -78,13 +74,32 @@ La lógica implementada consiste en:
 - aumentar su contador si ya existe,
 - o agregarlo si aparece por primera vez.
 
-![Figura 2](imagenes/figura2.png)
+## Código implementado
 
-**Figura 2 – Implementación del método ContarOcurrencias().**
+```csharp
+private Dictionary<string, int> ContarOcurrencias(List<string> datos)
+{
+    Dictionary<string, int> ocurrencias = new Dictionary<string, int>();
+
+    foreach (string texto in datos)
+    {
+        if (ocurrencias.ContainsKey(texto))
+        {
+            ocurrencias[texto] = ocurrencias[texto] + 1;
+        }
+        else
+        {
+            ocurrencias.Add(texto, 1);
+        }
+    }
+
+    return ocurrencias;
+}
+```
 
 ---
 
-## 4. Conversión de datos a objetos Dato
+# 4. Conversión de datos a objetos Dato
 
 Una vez obtenidas las ocurrencias, los resultados fueron transformados en objetos de tipo `Dato` para poder trabajar con ellos dentro del sistema.
 
@@ -96,7 +111,7 @@ Esto permitió preparar los datos para ser ordenados y posteriormente mostrados 
 
 ---
 
-## 5. Implementación del algoritmo de ordenamiento
+# 5. Implementación del algoritmo de ordenamiento
 
 Como primera etapa del desarrollo se implementó un algoritmo `SelectionSort` debido a su simplicidad y facilidad para comprender el funcionamiento general del sistema.
 
@@ -110,9 +125,29 @@ Esta implementación permitió validar:
 - la conversión a objetos `Dato`,
 - y la visualización correcta de resultados en pantalla.
 
-![Figura 3](imagenes/figura3.png)
+## Código implementado (SelectionSort)
 
-**Figura 3 – Implementación inicial utilizando SelectionSort().**
+```csharp
+private void SelectionSort(List<Dato> lista)
+{
+    for (int i = 0; i < lista.Count - 1; i++)
+    {
+        int posicionMayor = i;
+
+        for (int j = i + 1; j < lista.Count; j++)
+        {
+            if (lista[j].ocurrencia > lista[posicionMayor].ocurrencia)
+            {
+                posicionMayor = j;
+            }
+        }
+
+        Dato auxiliar = lista[i];
+        lista[i] = lista[posicionMayor];
+        lista[posicionMayor] = auxiliar;
+    }
+}
+```
 
 ---
 
@@ -127,13 +162,27 @@ La lógica de `MergeSort` consiste en:
 
 Además, `MergeSort` permitió reducir significativamente la cantidad de comparaciones necesarias para ordenar los datos cuando se trabaja con datasets grandes.
 
-![Figura 4](imagenes/figura4.png)
+## Código implementado (MergeSort)
 
-**Figura 4 – Implementación final utilizando MergeSort().**
+```csharp
+private void MergeSort(List<Dato> lista, int izquierda, int derecha)
+{
+    if (izquierda < derecha)
+    {
+        int medio = (izquierda + derecha) / 2;
+
+        MergeSort(lista, izquierda, medio);
+
+        MergeSort(lista, medio + 1, derecha);
+
+        Merge(lista, izquierda, medio, derecha);
+    }
+}
+```
 
 ---
 
-## 6. Implementación de Heap Binaria
+# 6. Implementación de Heap Binaria
 
 Luego de implementar la estrategia basada en `MergeSort`, se desarrolló una Heap binaria máxima para cumplir con los requisitos principales del trabajo práctico.
 
@@ -152,21 +201,65 @@ Para ello se implementaron los métodos:
 
 La estrategia `BuscarConHeap()` utiliza esta estructura para almacenar los datos según su prioridad y posteriormente recuperar los elementos con mayor cantidad de ocurrencias.
 
-![Figura 5](imagenes/figura5.png)
+## Código implementado (HeapifyUp)
 
-**Figura 5 – Implementación de la Heap binaria máxima.**
+```csharp
+private void HeapifyUp(int indice)
+{
+    while (indice > 0)
+    {
+        int padre = (indice - 1) / 2;
+
+        if (elementos[indice].ocurrencia > elementos[padre].ocurrencia)
+        {
+            Dato auxiliar = elementos[indice];
+            elementos[indice] = elementos[padre];
+            elementos[padre] = auxiliar;
+
+            indice = padre;
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+```
 
 ---
 
-## 7. Carga de resultados
+## Código implementado (BuscarConHeap)
+
+```csharp
+public void BuscarConHeap(List<string> datos, int cantidad, List<Dato> collected)
+{
+    Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
+
+    MaxHeap heap = new MaxHeap();
+
+    foreach (KeyValuePair<string, int> item in ocurrencias)
+    {
+        Dato nuevoDato = new Dato(item.Value, item.Key);
+
+        heap.Insertar(nuevoDato);
+    }
+
+    for (int i = 0; i < cantidad && heap.Count > 0; i++)
+    {
+        Dato mayor = heap.ExtraerMax();
+
+        collected.Add(mayor);
+    }
+}
+```
+
+---
+
+# 7. Carga de resultados
 
 Finalmente, luego de ordenar la lista o utilizar la Heap, se tomaron únicamente los primeros resultados solicitados por el usuario mediante el parámetro `cantidad`.
 
 Estos elementos fueron agregados a la lista `collected` para ser mostrados posteriormente en la interfaz gráfica del sistema.
-
-![Figura 6](imagenes/figura6.png)
-
-**Figura 6 – Resultados obtenidos en la interfaz gráfica del programa.**
 
 ---
 
@@ -216,10 +309,3 @@ En conclusión, esta primera entrega permitió no solamente desarrollar una solu
 - Clases prácticas de la materia.
 - Documentación oficial de C# y .NET.
 - Código base proporcionado por la cátedra.
-
-
-
-
-
-
-
