@@ -24,7 +24,7 @@ namespace tpfinal
             {
                 elementos.Add(dato);
 
-                HeapifyUp(elementos.Count - 1);
+                SubirElemento(elementos.Count - 1);
             }
 
             public Dato ExtraerMax()
@@ -40,12 +40,12 @@ namespace tpfinal
 
                 elementos.RemoveAt(elementos.Count - 1);
 
-                HeapifyDown(0);
+                BajarElemento(0);
 
                 return maximo;
             }
 
-            private void HeapifyUp(int indice)
+            private void SubirElemento(int indice)
             {
                 while (indice > 0)
                 {
@@ -66,7 +66,7 @@ namespace tpfinal
                 }
             }
 
-            private void HeapifyDown(int indice)
+            private void BajarElemento(int indice)
             {
                 while (true)
                 {
@@ -288,29 +288,6 @@ namespace tpfinal
             }
 
 
-        }
-
-
-        // Implementación inicial utilizada antes de migrar a MergeSort
-
-        private void SelectionSort(List<Dato> lista)
-        {
-            for (int i = 0; i < lista.Count - 1; i++)
-            {
-                int posicionMayor = i;
-
-                for (int j = i + 1; j < lista.Count; j++)
-                {
-                    if (lista[j].ocurrencia > lista[posicionMayor].ocurrencia)
-                    {
-                        posicionMayor = j;
-                    }
-                }
-
-                Dato auxiliar = lista[i];
-                lista[i] = lista[posicionMayor];
-                lista[posicionMayor] = auxiliar;
-            }
         }
 
 
