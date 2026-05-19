@@ -42,10 +42,14 @@ namespace tpfinal
                 while (!parser.EndOfData)
                 {
                     fields = parser.ReadFields();
-                    titulo = Utils.RemoveSpecialCharacters(fields[1]);
-                    descript = Utils.RemoveSpecialCharacters(fields[2]);
+         
+                    titulo = Utils.RemoveSpecialCharacters(fields[0]);
+
+                    Backend.datos.Add(titulo);
+                    //titulo = Utils.RemoveSpecialCharacters(fields[1]);
+                    //descript = Utils.RemoveSpecialCharacters(fields[2]);
                     //estrategia.AgregarDato(Backend.arbol, new Dato(0, titulo, descript));
-                    Backend.datos.Add(titulo+"-"+descript);
+                    //Backend.datos.Add(titulo+"-"+descript);
                     progressBar1.PerformStep();
                 }
             }

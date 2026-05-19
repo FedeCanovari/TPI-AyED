@@ -101,6 +101,11 @@ namespace tpfinal
                     }
                 }
             }
+
+            public List<Dato> ObtenerElementos()
+            {
+                return elementos;
+            }
         }
         private Dictionary<string, int> ContarOcurrencias(List<string> datos)
         {
@@ -123,25 +128,142 @@ namespace tpfinal
 
         public String Consulta1(List<string> datos)
         {
-            string resutl = "Implementar";
-            return resutl;
+            Stopwatch relojOrden = new Stopwatch();
+
+            List<Dato> resultadosOrden = new List<Dato>();
+
+            relojOrden.Start();
+
+            BuscarConOtro(datos, 5, resultadosOrden);
+
+            relojOrden.Stop();
+
+            long tiempoOrden = relojOrden.ElapsedMilliseconds;
+
+
+
+            Stopwatch relojHeap = new Stopwatch();
+
+            List<Dato> resultadosHeap = new List<Dato>();
+
+            relojHeap.Start();
+
+            BuscarConHeap(datos, 5, resultadosHeap);
+
+            relojHeap.Stop();
+
+            long tiempoHeap = relojHeap.ElapsedMilliseconds;
+
+
+
+            string resultado = "";
+
+            resultado += "RESULTADOS CONSULTA 1";
+            resultado += Environment.NewLine;
+            resultado += Environment.NewLine;
+
+            resultado += "Tiempo BuscarConOtro (MergeSort): ";
+            resultado += tiempoOrden + " ms";
+
+            resultado += Environment.NewLine;
+
+            resultado += "Tiempo BuscarConHeap (Heap Binaria): ";
+            resultado += tiempoHeap + " ms";
+
+            resultado += Environment.NewLine;
+            resultado += Environment.NewLine;
+
+            resultado += "Busqueda completada correctamente.";
+
+            return resultado;
         }
 
 
         public String Consulta2(List<string> datos)
         {
-            string result = "Implementar";
+            Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
 
-            return result;
+            MaxHeap heap = new MaxHeap();
+
+            foreach (KeyValuePair<string, int> item in ocurrencias)
+            {
+                Dato nuevoDato = new Dato(item.Value, item.Key);
+
+                heap.Insertar(nuevoDato);
+            }
+
+            List<Dato> elementos = heap.ObtenerElementos();
+
+            string resultado = "";
+
+            resultado += "CAMINO A LA HOJA MAS IZQUIERDA";
+            resultado += Environment.NewLine;
+            resultado += Environment.NewLine;
+
+            int indice = 0;
+
+            while (indice < elementos.Count)
+            {
+                resultado += elementos[indice].texto;
+                resultado += " (" + elementos[indice].ocurrencia + ")";
+
+                resultado += Environment.NewLine;
+
+                indice = 2 * indice + 1;
+            }
+
+            return resultado;
         }
 
 
 
         public String Consulta3(List<string> datos)
         {
-            string result = "Implementar";
+            Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
 
-            return result;
+            MaxHeap heap = new MaxHeap();
+
+            foreach (KeyValuePair<string, int> item in ocurrencias)
+            {
+                Dato nuevoDato = new Dato(item.Value, item.Key);
+
+                heap.Insertar(nuevoDato);
+            }
+
+            List<Dato> elementos = heap.ObtenerElementos();
+
+            string resultado = "";
+
+            resultado += "DATOS DE LA HEAP POR NIVELES";
+            resultado += Environment.NewLine;
+            resultado += Environment.NewLine;
+
+            int indice = 0;
+            int nivel = 0;
+
+            while (indice < elementos.Count)
+            {
+                resultado += "Nivel " + nivel;
+                resultado += Environment.NewLine;
+
+                int cantidadElementos = (int)Math.Pow(2, nivel);
+
+                for (int i = 0; i < cantidadElementos && indice < elementos.Count; i++)
+                {
+                    resultado += elementos[indice].texto;
+                    resultado += " (" + elementos[indice].ocurrencia + ")";
+
+                    resultado += Environment.NewLine;
+
+                    indice++;
+                }
+
+                resultado += Environment.NewLine;
+
+                nivel++;
+            }
+
+            return resultado;
         }
 
 
