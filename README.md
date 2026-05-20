@@ -544,6 +544,12 @@ La implementación de la Heap permitió profundizar la comprensión de estructur
 
 ---
 
+Resultados obtenidos en la interfaz gráfica del programa.
+
+![ResultadosObtenidos](diagramas/ResultadosObtenidos.png)
+
+---
+
 # Diagramas de Flujo
 
 ## ContarOcurrencias()
