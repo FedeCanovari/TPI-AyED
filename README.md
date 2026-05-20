@@ -544,6 +544,38 @@ La implementación de la Heap permitió profundizar la comprensión de estructur
 
 ---
 
+# DIAGRAMAS DE FLUJO
+
+## ContarOcurrencias()
+
+![ContarOcurrencias](diagramas/Diagrama_de_flujo-ContarOcurrencias.png)
+
+---
+
+## BuscarConOtro()
+
+![BuscarConOtro](diagramas/buscar_con_otro.png)
+
+---
+
+## MergeSort()
+
+![MergeSort](diagramas/mergesort.png)
+
+---
+
+## BuscarConHeap()
+
+![BuscarConHeap](diagramas/buscar_con_heap.png)
+
+---
+
+## Consulta1()
+
+![Consulta1](diagramas/consulta1.png)
+
+---
+
 # CONCLUSIÓN
 
 En la entrega final se logró desarrollar una solución funcional para el problema planteado utilizando estructuras y algoritmos vistos en la materia.
