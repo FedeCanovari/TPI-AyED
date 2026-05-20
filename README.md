@@ -9,7 +9,7 @@
 
 ## Fecha
 
-19 de mayo de 2026
+18 de mayo de 2026
 
 ## Entrega
 
