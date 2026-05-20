@@ -544,6 +544,104 @@ La implementación de la Heap permitió profundizar la comprensión de estructur
 
 ---
 
+# Diagramas de Flujo
+
+## ContarOcurrencias()
+
+El siguiente diagrama representa el funcionamiento del método encargado de contar las ocurrencias de cada elemento dentro del dataset utilizando un Dictionary.
+
+![ContarOcurrencias](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20ContarOcurrencias().png)
+
+---
+
+## BuscarConOtro()
+
+El siguiente diagrama representa la estrategia basada en MergeSort utilizada para ordenar los datos según la cantidad de ocurrencias.
+
+![BuscarConOtro](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20BuscarConOtro().png)
+
+---
+
+## MergeSort()
+
+El siguiente diagrama representa el funcionamiento recursivo del algoritmo MergeSort.
+
+![MergeSort](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20MergeSort().png)
+
+---
+
+## Merge()
+
+El siguiente diagrama representa el proceso de combinación utilizado por MergeSort.
+
+![Merge](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Merge().png)
+
+---
+
+## BuscarConHeap()
+
+El siguiente diagrama representa la estrategia basada en Heap binaria máxima.
+
+![BuscarConHeap](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20BuscarConHeap().png)
+
+---
+
+## Insertar()
+
+El siguiente diagrama representa la inserción de elementos dentro de la Heap.
+
+![Insertar](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Insertar().png)
+
+---
+
+## SubirElemento()
+
+El siguiente diagrama representa el proceso de reorganización ascendente dentro de la Heap.
+
+![SubirElemento](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20SubirElemento().png)
+
+---
+
+## BajarElemento()
+
+El siguiente diagrama representa el proceso de reorganización descendente dentro de la Heap.
+
+![BajarElemento](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20BajarElemento().png)
+
+---
+
+## ExtraerMax()
+
+El siguiente diagrama representa la extracción del elemento máximo de la Heap.
+
+![ExtraerMax](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20ExtraerMax().png)
+
+---
+
+## Consulta1()
+
+El siguiente diagrama representa la comparación de tiempos entre ambas estrategias implementadas.
+
+![Consulta1](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Consulta1().png)
+
+---
+
+## Consulta2()
+
+El siguiente diagrama representa el recorrido hacia la hoja más izquierda de la Heap.
+
+![Consulta2](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Consulta2().png)
+
+---
+
+## Consulta3()
+
+El siguiente diagrama representa la visualización de la Heap organizada por niveles.
+
+![Consulta3](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Consulta3().png)
+
+---
+
 # CONCLUSIÓN
 
 En la entrega final se logró desarrollar una solución funcional para el problema planteado utilizando estructuras y algoritmos vistos en la materia.
