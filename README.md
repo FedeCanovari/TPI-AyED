@@ -548,7 +548,7 @@ La implementación de la Heap permitió profundizar la comprensión de estructur
 
 ## ContarOcurrencias()
 
-![ContarOcurrencias](diagramas/Diagrama_de_flujo-ContarOcurrencias.png)
+![ContarOcurrencias](diagramas/Diagrama_de_flujo_-_ContarOcurrencias.png)
 
 ---
 
