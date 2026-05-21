@@ -243,7 +243,7 @@ Luego de implementar la estrategia basada en `MergeSort`, se desarrolló una Hea
 
 La Heap fue implementada utilizando un arreglo (`Dato[]`) para representar el árbol binario de forma implícita mediante índices.
 
-Además, se utilizó una variable auxiliar llamada `ultimo` para indicar la última posición ocupada dentro del arreglo.
+Además, se utilizó una variable auxiliar llamada `cantidad` para indicar cuántos elementos hay almacenados dentro del arreglo.
 
 La estructura desarrollada permitió:
 
@@ -255,12 +255,12 @@ La estructura desarrollada permitió:
 
 ```csharp
 private Dato[] elementos;
-private int ultimo;
+private int cantidad;
 
-public MaxHeap(int capacidad)
+public MaxHeap(int tamanio)
 {
-    elementos = new Dato[capacidad];
-    ultimo = -1;
+    elementos = new Dato[tamanio];
+    cantidad = 0;
 }
 ```
 
@@ -269,11 +269,11 @@ public MaxHeap(int capacidad)
 ```csharp
 public void Insertar(Dato dato)
 {
-    ultimo++;
+    elementos[cantidad] = dato;
 
-    elementos[ultimo] = dato;
+    SubirElemento(cantidad);
 
-    SubirElemento(ultimo);
+    cantidad++;
 }
 ```
 
@@ -306,30 +306,47 @@ private void SubirElemento(int indice)
 
 ```csharp
 private void BajarElemento(int indice)
+
 {
+
     while (true)
+
     {
+
         int hijoIzquierdo = 2 * indice + 1;
+
         int hijoDerecho = 2 * indice + 2;
 
         int mayor = indice;
 
-        if (hijoIzquierdo <= ultimo &&
+        if (hijoIzquierdo < cantidad &&
+
             elementos[hijoIzquierdo].ocurrencia > elementos[mayor].ocurrencia)
+
         {
+
             mayor = hijoIzquierdo;
+
         }
 
-        if (hijoDerecho <= ultimo &&
+        if (hijoDerecho < cantidad &&
+
             elementos[hijoDerecho].ocurrencia > elementos[mayor].ocurrencia)
+
         {
+
             mayor = hijoDerecho;
+
         }
 
         if (mayor != indice)
+
         {
+
             Dato auxiliar = elementos[indice];
+
             elementos[indice] = elementos[mayor];
+
             elementos[mayor] = auxiliar;
 
             indice = mayor;
@@ -339,6 +356,7 @@ private void BajarElemento(int indice)
             break;
         }
     }
+
 }
 ```
 
@@ -347,16 +365,16 @@ private void BajarElemento(int indice)
 ```csharp
 public Dato ExtraerMax()
 {
-    if (ultimo < 0)
+    if (cantidad == 0)
     {
         return null;
     }
 
     Dato maximo = elementos[0];
 
-    elementos[0] = elementos[ultimo];
+    elementos[0] = elementos[cantidad - 1];
 
-    ultimo--;
+    cantidad--;
 
     BajarElemento(0);
 
@@ -403,34 +421,59 @@ Para ello se utilizó la clase `Stopwatch` de C#.
 
 ```csharp
 public String Consulta1(List<string> datos)
+
 {
-    Stopwatch relojHeap = new Stopwatch();
+
     Stopwatch relojOrden = new Stopwatch();
 
-    List<Dato> listaHeap = new List<Dato>();
-    List<Dato> listaOrden = new List<Dato>();
-
-    relojHeap.Start();
-    BuscarConHeap(datos, 5, listaHeap);
-    relojHeap.Stop();
+    List<Dato> resultadosOrden = new List<Dato>();
 
     relojOrden.Start();
-    BuscarConOtro(datos, 5, listaOrden);
+
+    BuscarConOtro(datos, 5, resultadosOrden);
+
     relojOrden.Stop();
+
+    long tiempoOrden = relojOrden.ElapsedMilliseconds;
+
+    Stopwatch relojHeap = new Stopwatch();
+
+    List<Dato> resultadosHeap = new List<Dato>();
+
+    relojHeap.Start();
+
+    BuscarConHeap(datos, 5, resultadosHeap);
+
+    relojHeap.Stop();
+
+    long tiempoHeap = relojHeap.ElapsedMilliseconds;
 
     string resultado = "";
 
-    resultado += "Tiempo Heap: ";
-    resultado += relojHeap.ElapsedMilliseconds;
-    resultado += " ms";
+    resultado += "RESULTADOS CONSULTA 1";
 
     resultado += Environment.NewLine;
 
-    resultado += "Tiempo Ordenamiento: ";
-    resultado += relojOrden.ElapsedMilliseconds;
-    resultado += " ms";
+    resultado += Environment.NewLine;
+
+    resultado += "Tiempo BuscarConOtro (MergeSort): ";
+
+    resultado += tiempoOrden + " ms";
+
+    resultado += Environment.NewLine;
+
+    resultado += "Tiempo BuscarConHeap (Heap Binaria): ";
+
+    resultado += tiempoHeap + " ms";
+
+    resultado += Environment.NewLine;
+
+    resultado += Environment.NewLine;
+
+    resultado += "Busqueda completada correctamente.";
 
     return resultado;
+
 }
 ```
 
