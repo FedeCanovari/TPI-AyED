@@ -241,7 +241,9 @@ public void BuscarConOtro(List<string> datos, int cantidad, List<Dato> collected
 
 Luego de implementar la estrategia basada en `MergeSort`, se desarrolló una Heap binaria máxima para cumplir con los requisitos principales del trabajo práctico.
 
-La Heap fue implementada utilizando una lista para representar el árbol binario de forma implícita mediante índices.
+La Heap fue implementada utilizando un arreglo (`Dato[]`) para representar el árbol binario de forma implícita mediante índices.
+
+Además, se utilizó una variable auxiliar llamada `ultimo` para indicar la última posición ocupada dentro del arreglo.
 
 La estructura desarrollada permitió:
 
@@ -249,14 +251,29 @@ La estructura desarrollada permitió:
 - reorganizar automáticamente los datos,
 - y extraer rápidamente el elemento con mayor cantidad de ocurrencias.
 
+### Código implementado (Atributos)
+
+```csharp
+private Dato[] elementos;
+private int ultimo;
+
+public MaxHeap(int capacidad)
+{
+    elementos = new Dato[capacidad];
+    ultimo = -1;
+}
+```
+
 ### Código implementado (Insertar)
 
 ```csharp
 public void Insertar(Dato dato)
 {
-    elementos.Add(dato);
+    ultimo++;
 
-    SubirElemento(elementos.Count - 1);
+    elementos[ultimo] = dato;
+
+    SubirElemento(ultimo);
 }
 ```
 
@@ -290,22 +307,20 @@ private void SubirElemento(int indice)
 ```csharp
 private void BajarElemento(int indice)
 {
-    int ultimoIndice = elementos.Count - 1;
-
     while (true)
     {
-        int hijoIzquierdo = indice * 2 + 1;
-        int hijoDerecho = indice * 2 + 2;
+        int hijoIzquierdo = 2 * indice + 1;
+        int hijoDerecho = 2 * indice + 2;
 
         int mayor = indice;
 
-        if (hijoIzquierdo <= ultimoIndice &&
+        if (hijoIzquierdo <= ultimo &&
             elementos[hijoIzquierdo].ocurrencia > elementos[mayor].ocurrencia)
         {
             mayor = hijoIzquierdo;
         }
 
-        if (hijoDerecho <= ultimoIndice &&
+        if (hijoDerecho <= ultimo &&
             elementos[hijoDerecho].ocurrencia > elementos[mayor].ocurrencia)
         {
             mayor = hijoDerecho;
@@ -332,11 +347,16 @@ private void BajarElemento(int indice)
 ```csharp
 public Dato ExtraerMax()
 {
+    if (ultimo < 0)
+    {
+        return null;
+    }
+
     Dato maximo = elementos[0];
 
-    elementos[0] = elementos[elementos.Count - 1];
+    elementos[0] = elementos[ultimo];
 
-    elementos.RemoveAt(elementos.Count - 1);
+    ultimo--;
 
     BajarElemento(0);
 
@@ -351,7 +371,7 @@ public void BuscarConHeap(List<string> datos, int cantidad, List<Dato> collected
 {
     Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
 
-    MaxHeap heap = new MaxHeap();
+    MaxHeap heap = new MaxHeap(ocurrencias.Count);
 
     foreach (KeyValuePair<string, int> item in ocurrencias)
     {
@@ -416,121 +436,6 @@ public String Consulta1(List<string> datos)
 
 ---
 
-## 8. Consulta2() — Camino hacia la hoja más izquierda
-
-La segunda consulta permite recorrer el camino hacia la hoja más izquierda de la Heap binaria.
-
-El recorrido se realiza utilizando índices dentro de la lista.
-
-Para avanzar hacia el hijo izquierdo se utiliza:
-
-```text
-hijo izquierdo = 2 * índice + 1
-```
-
-### Código implementado
-
-```csharp
-public String Consulta2(List<string> datos)
-{
-    Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
-
-    MaxHeap heap = new MaxHeap();
-
-    foreach (KeyValuePair<string, int> item in ocurrencias)
-    {
-        heap.Insertar(new Dato(item.Value, item.Key));
-    }
-
-    string resultado = "";
-
-    int indice = 0;
-
-    while (indice < heap.elementos.Count)
-    {
-        resultado += heap.elementos[indice].texto;
-        resultado += " -> ";
-
-        indice = indice * 2 + 1;
-    }
-
-    resultado += "FIN";
-
-    return resultado;
-}
-```
-
----
-
-## 9. Consulta3() — Mostrar Heap por niveles
-
-La tercera consulta muestra los elementos de la Heap organizados por niveles, permitiendo representar visualmente la estructura jerárquica del árbol binario.
-
-### Código implementado
-
-```csharp
-public String Consulta3(List<string> datos)
-{
-    Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
-
-    MaxHeap heap = new MaxHeap();
-
-    foreach (KeyValuePair<string, int> item in ocurrencias)
-    {
-        heap.Insertar(new Dato(item.Value, item.Key));
-    }
-
-    string resultado = "";
-
-    int nivel = 0;
-    int cantidadNivel = 1;
-    int contador = 0;
-
-    resultado += "Nivel " + nivel + ":" + Environment.NewLine;
-
-    foreach (Dato dato in heap.elementos)
-    {
-        resultado += dato.texto;
-        resultado += " (" + dato.ocurrencia + ")";
-        resultado += Environment.NewLine;
-
-        contador++;
-
-        if (contador == cantidadNivel)
-        {
-            nivel++;
-
-            resultado += Environment.NewLine;
-            resultado += "Nivel " + nivel + ":" + Environment.NewLine;
-
-            cantidadNivel = cantidadNivel * 2;
-
-            contador = 0;
-        }
-    }
-
-    return resultado;
-}
-```
-
----
-
-## 10. Corrección y análisis del dataset
-
-Durante las pruebas iniciales se observó que los resultados obtenidos no eran representativos debido a que se estaban utilizando columnas del dataset con poca variabilidad.
-
-Inicialmente se trabajó utilizando columnas relacionadas con medidas estadísticas.
-
-Luego de analizar la estructura real del CSV, se decidió utilizar la columna correspondiente al nombre del contaminante (`fields[0]`), obteniendo resultados más coherentes.
-
-### Código corregido
-
-```csharp
-titulo = Utils.RemoveSpecialCharacters(fields[0]);
-```
-
----
-
 # RESULTADOS
 
 Durante el desarrollo del trabajo se logró implementar correctamente dos estrategias distintas para resolver el problema planteado:
@@ -540,7 +445,7 @@ Durante el desarrollo del trabajo se logró implementar correctamente dos estrat
 
 Además, las consultas implementadas permitieron analizar internamente la estructura de la Heap y comparar el comportamiento de ambas estrategias de búsqueda.
 
-La implementación de la Heap permitió profundizar la comprensión de estructuras de datos jerárquicas y del manejo de árboles binarios implícitos mediante listas.
+La implementación de la Heap permitió profundizar la comprensión de estructuras de datos jerárquicas y del manejo de árboles binarios implícitos mediante arreglos.
 
 ---
 
@@ -554,15 +459,11 @@ Resultados obtenidos en la interfaz gráfica del programa.
 
 ## ContarOcurrencias()
 
-El siguiente diagrama representa el funcionamiento del método encargado de contar las ocurrencias de cada elemento dentro del dataset utilizando un Dictionary.
-
 ![ContarOcurrencias](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20ContarOcurrencias().png)
 
 ---
 
 ## BuscarConOtro()
-
-El siguiente diagrama representa la estrategia basada en MergeSort utilizada para ordenar los datos según la cantidad de ocurrencias.
 
 ![BuscarConOtro](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20BuscarConOtro().png)
 
@@ -570,15 +471,11 @@ El siguiente diagrama representa la estrategia basada en MergeSort utilizada par
 
 ## MergeSort()
 
-El siguiente diagrama representa el funcionamiento recursivo del algoritmo MergeSort.
-
 ![MergeSort](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20MergeSort().png)
 
 ---
 
 ## Merge()
-
-El siguiente diagrama representa el proceso de combinación utilizado por MergeSort.
 
 ![Merge](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Merge().png)
 
@@ -586,15 +483,11 @@ El siguiente diagrama representa el proceso de combinación utilizado por MergeS
 
 ## BuscarConHeap()
 
-El siguiente diagrama representa la estrategia basada en Heap binaria máxima.
-
 ![BuscarConHeap](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20BuscarConHeap().png)
 
 ---
 
 ## Insertar()
-
-El siguiente diagrama representa la inserción de elementos dentro de la Heap.
 
 ![Insertar](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Insertar().png)
 
@@ -602,15 +495,11 @@ El siguiente diagrama representa la inserción de elementos dentro de la Heap.
 
 ## SubirElemento()
 
-El siguiente diagrama representa el proceso de reorganización ascendente dentro de la Heap.
-
 ![SubirElemento](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20SubirElemento().png)
 
 ---
 
 ## BajarElemento()
-
-El siguiente diagrama representa el proceso de reorganización descendente dentro de la Heap.
 
 ![BajarElemento](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20BajarElemento().png)
 
@@ -618,15 +507,11 @@ El siguiente diagrama representa el proceso de reorganización descendente dentr
 
 ## ExtraerMax()
 
-El siguiente diagrama representa la extracción del elemento máximo de la Heap.
-
 ![ExtraerMax](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20ExtraerMax().png)
 
 ---
 
 ## Consulta1()
-
-El siguiente diagrama representa la comparación de tiempos entre ambas estrategias implementadas.
 
 ![Consulta1](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Consulta1().png)
 
@@ -634,15 +519,11 @@ El siguiente diagrama representa la comparación de tiempos entre ambas estrateg
 
 ## Consulta2()
 
-El siguiente diagrama representa el recorrido hacia la hoja más izquierda de la Heap.
-
 ![Consulta2](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Consulta2().png)
 
 ---
 
 ## Consulta3()
-
-El siguiente diagrama representa la visualización de la Heap organizada por niveles.
 
 ![Consulta3](diagramas/Diagrama%20de%20flujo%20%E2%80%94%20Consulta3().png)
 
@@ -663,7 +544,7 @@ El trabajo permitió reforzar conceptos importantes como:
 - árboles binarios implícitos,
 - y separación entre lógica e interfaz gráfica.
 
-Además, se logró comprender cómo representar estructuras jerárquicas utilizando listas y cómo aplicar algoritmos reales dentro de un proyecto funcional completo.
+Además, se logró comprender cómo representar estructuras jerárquicas utilizando arreglos y cómo aplicar algoritmos reales dentro de un proyecto funcional completo.
 
 En conclusión, el trabajo permitió no solamente desarrollar una solución funcional, sino también comprender de manera más profunda cómo aplicar estructuras de datos y algoritmos reales dentro de un proyecto completo.
 
