@@ -1,44 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Numerics;
-using System.Reflection;
 using System.Windows.Forms;
 using tp1;
 
 namespace tpfinal
 {
-
     public class Estrategia
     {
         public class MaxHeap
         {
-            private List<Dato> elementos = new List<Dato>();
+            private Dato[] elementos;
+            private int cantidad;
+
+            public MaxHeap(int tamanio)
+            {
+                elementos = new Dato[tamanio];
+                cantidad = 0;
+            }
 
             public int Count
             {
-                get { return elementos.Count; }
+                get { return cantidad; }
             }
 
             public void Insertar(Dato dato)
             {
-                elementos.Add(dato);
+                elementos[cantidad] = dato;
 
-                SubirElemento(elementos.Count - 1);
+                SubirElemento(cantidad);
+
+                cantidad++;
             }
 
             public Dato ExtraerMax()
             {
-                if (elementos.Count == 0)
+                if (cantidad == 0)
                 {
                     return null;
                 }
 
                 Dato maximo = elementos[0];
 
-                elementos[0] = elementos[elementos.Count - 1];
+                elementos[0] = elementos[cantidad - 1];
 
-                elementos.RemoveAt(elementos.Count - 1);
+                cantidad--;
 
                 BajarElemento(0);
 
@@ -75,13 +81,13 @@ namespace tpfinal
 
                     int mayor = indice;
 
-                    if (hijoIzquierdo < elementos.Count &&
+                    if (hijoIzquierdo < cantidad &&
                         elementos[hijoIzquierdo].ocurrencia > elementos[mayor].ocurrencia)
                     {
                         mayor = hijoIzquierdo;
                     }
 
-                    if (hijoDerecho < elementos.Count &&
+                    if (hijoDerecho < cantidad &&
                         elementos[hijoDerecho].ocurrencia > elementos[mayor].ocurrencia)
                     {
                         mayor = hijoDerecho;
@@ -102,11 +108,12 @@ namespace tpfinal
                 }
             }
 
-            public List<Dato> ObtenerElementos()
+            public Dato[] ObtenerElementos()
             {
                 return elementos;
             }
         }
+
         private Dictionary<string, int> ContarOcurrencias(List<string> datos)
         {
             Dictionary<string, int> ocurrencias = new Dictionary<string, int>();
@@ -140,8 +147,6 @@ namespace tpfinal
 
             long tiempoOrden = relojOrden.ElapsedMilliseconds;
 
-
-
             Stopwatch relojHeap = new Stopwatch();
 
             List<Dato> resultadosHeap = new List<Dato>();
@@ -153,8 +158,6 @@ namespace tpfinal
             relojHeap.Stop();
 
             long tiempoHeap = relojHeap.ElapsedMilliseconds;
-
-
 
             string resultado = "";
 
@@ -178,12 +181,11 @@ namespace tpfinal
             return resultado;
         }
 
-
         public String Consulta2(List<string> datos)
         {
             Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
 
-            MaxHeap heap = new MaxHeap();
+            MaxHeap heap = new MaxHeap(ocurrencias.Count);
 
             foreach (KeyValuePair<string, int> item in ocurrencias)
             {
@@ -192,7 +194,7 @@ namespace tpfinal
                 heap.Insertar(nuevoDato);
             }
 
-            List<Dato> elementos = heap.ObtenerElementos();
+            Dato[] elementos = heap.ObtenerElementos();
 
             string resultado = "";
 
@@ -202,7 +204,7 @@ namespace tpfinal
 
             int indice = 0;
 
-            while (indice < elementos.Count)
+            while (indice < heap.Count)
             {
                 resultado += elementos[indice].texto;
                 resultado += " (" + elementos[indice].ocurrencia + ")";
@@ -215,13 +217,11 @@ namespace tpfinal
             return resultado;
         }
 
-
-
         public String Consulta3(List<string> datos)
         {
             Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
 
-            MaxHeap heap = new MaxHeap();
+            MaxHeap heap = new MaxHeap(ocurrencias.Count);
 
             foreach (KeyValuePair<string, int> item in ocurrencias)
             {
@@ -230,7 +230,7 @@ namespace tpfinal
                 heap.Insertar(nuevoDato);
             }
 
-            List<Dato> elementos = heap.ObtenerElementos();
+            Dato[] elementos = heap.ObtenerElementos();
 
             string resultado = "";
 
@@ -241,14 +241,14 @@ namespace tpfinal
             int indice = 0;
             int nivel = 0;
 
-            while (indice < elementos.Count)
+            while (indice < heap.Count)
             {
                 resultado += "Nivel " + nivel;
                 resultado += Environment.NewLine;
 
                 int cantidadElementos = (int)Math.Pow(2, nivel);
 
-                for (int i = 0; i < cantidadElementos && indice < elementos.Count; i++)
+                for (int i = 0; i < cantidadElementos && indice < heap.Count; i++)
                 {
                     resultado += elementos[indice].texto;
                     resultado += " (" + elementos[indice].ocurrencia + ")";
@@ -265,7 +265,6 @@ namespace tpfinal
 
             return resultado;
         }
-
 
         public void BuscarConOtro(List<string> datos, int cantidad, List<Dato> collected)
         {
@@ -286,10 +285,7 @@ namespace tpfinal
             {
                 collected.Add(listaDatos[i]);
             }
-
-
         }
-
 
         private void MergeSort(List<Dato> lista, int izquierda, int derecha)
         {
@@ -344,13 +340,11 @@ namespace tpfinal
             }
         }
 
-
-
         public void BuscarConHeap(List<string> datos, int cantidad, List<Dato> collected)
         {
             Dictionary<string, int> ocurrencias = ContarOcurrencias(datos);
 
-            MaxHeap heap = new MaxHeap();
+            MaxHeap heap = new MaxHeap(ocurrencias.Count);
 
             foreach (KeyValuePair<string, int> item in ocurrencias)
             {
@@ -366,10 +360,5 @@ namespace tpfinal
                 collected.Add(mayor);
             }
         }
-
-
-
-
     }
-
 }
